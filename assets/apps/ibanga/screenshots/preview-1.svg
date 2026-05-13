@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-hidden="true">
+  <rect width="800" height="450" fill="#06060a"/>
+  <rect x="200" y="120" width="400" height="200" rx="24" fill="#12121a" stroke="#ffffff12"/>
+  <text x="400" y="210" text-anchor="middle" fill="#f4f4f5" font-family="system-ui,sans-serif" font-size="32" font-weight="700">Privacy by design</text>
+  <text x="400" y="250" text-anchor="middle" fill="#71717a" font-family="system-ui,sans-serif" font-size="16">Minimal footprint · no clutter</text>
+</svg>
