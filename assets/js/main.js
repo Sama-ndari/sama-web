@@ -38,6 +38,49 @@ function heroTitleAccessibleString() {
 
 var heroDanceIndex = 0;
 
+var HERO_SWING_CHARS = { p: true };
+
+var HERO_FLIP_PAIRS = { b: "d", d: "b", g: "q", q: "g" };
+
+function isHeroSwingChar(ch) {
+  return Boolean(HERO_SWING_CHARS[ch.toLowerCase()]);
+}
+
+function isHeroFlipChar(ch) {
+  return Boolean(HERO_FLIP_PAIRS[ch.toLowerCase()]);
+}
+
+function heroFlipPair(ch) {
+  var pair = HERO_FLIP_PAIRS[ch.toLowerCase()];
+  if (ch !== ch.toLowerCase()) return pair.toUpperCase();
+  return pair;
+}
+
+function heroCharClassList(ch, accentChars) {
+  var classes = ["hero__char"];
+  if (accentChars) classes.push("hero__char--accent");
+  if (isHeroFlipChar(ch)) classes.push("hero__char--flip");
+  else if (isHeroSwingChar(ch)) classes.push("hero__char--swing");
+  return classes.join(" ");
+}
+
+function wrapHeroFlipCharHtml(ch, accentChars, index) {
+  var pair = heroFlipPair(ch);
+  return (
+    '<span class="' +
+    heroCharClassList(ch, accentChars) +
+    '" style="--i:' +
+    index +
+    '"><span class="hero__char-flip">' +
+    '<span class="hero__char-flip__face hero__char-flip__face--front">' +
+    escapeHtml(ch) +
+    "</span>" +
+    '<span class="hero__char-flip__face hero__char-flip__face--back">' +
+    escapeHtml(pair) +
+    "</span></span></span>"
+  );
+}
+
 function wrapHeroDancingChars(text, accentChars) {
   var html = "";
   for (var k = 0; k < text.length; k++) {
@@ -46,16 +89,20 @@ function wrapHeroDancingChars(text, accentChars) {
       html += " ";
       continue;
     }
-    var cls = accentChars ? "hero__char hero__char--accent" : "hero__char";
+    var index = heroDanceIndex;
+    heroDanceIndex += 1;
+    if (isHeroFlipChar(ch)) {
+      html += wrapHeroFlipCharHtml(ch, accentChars, index);
+      continue;
+    }
     html +=
       '<span class="' +
-      cls +
+      heroCharClassList(ch, accentChars) +
       '" style="--i:' +
-      heroDanceIndex +
+      index +
       '">' +
       escapeHtml(ch) +
       "</span>";
-    heroDanceIndex += 1;
   }
   return html;
 }

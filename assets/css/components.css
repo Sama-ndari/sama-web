@@ -1,13 +1,10 @@
-/* ===== HERO ===== */
-.hero {
-  padding: 72px 0 40px;
-  text-align: center;
+/* ===== HERO (blobs on main so glow is not clipped at catalog) ===== */
+main:has(> .hero) {
   position: relative;
-  overflow: hidden;
 }
 
-.hero::before,
-.hero::after {
+main:has(> .hero)::before,
+main:has(> .hero)::after {
   content: "";
   position: absolute;
   width: min(300px, 82vw);
@@ -20,30 +17,41 @@
   animation: heroBlob 18s ease-in-out infinite;
 }
 
-[data-theme="light"] .hero::before,
-[data-theme="light"] .hero::after {
+[data-theme="light"] main:has(> .hero)::before,
+[data-theme="light"] main:has(> .hero)::after {
   opacity: 0.34;
 }
 
-.hero::before {
+main:has(> .hero)::before {
   background: var(--accent);
-  top: -18%;
+  top: 0;
   right: -8%;
   animation-delay: 0s;
 }
 
-.hero::after {
-  width: min(200px, 55vw);
-  height: min(200px, 55vw);
+main:has(> .hero)::after {
+  width: min(240px, 62vw);
+  height: min(240px, 62vw);
   background: var(--accent-2);
-  bottom: 0;
+  top: clamp(200px, 32vh, 380px);
   left: -6%;
   animation-delay: -9s;
 }
 
-.hero .container {
+main:has(> .hero) > .hero,
+main:has(> .hero) > .catalog {
   position: relative;
   z-index: 1;
+}
+
+.hero {
+  padding: 72px 0 12px;
+  text-align: center;
+  position: relative;
+}
+
+.hero .container {
+  position: relative;
 }
 
 .hero__label {
@@ -109,6 +117,62 @@
   -webkit-text-fill-color: transparent;
   animation: heroCharFloat 4.2s ease-in-out infinite, gradientFlow 12s ease infinite;
   animation-delay: calc(var(--i) * 0.04s), 0s;
+}
+
+.hero__char--swing {
+  transform-origin: 50% 88%;
+  animation: heroCharSwing 2.75s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.055s);
+}
+
+.hero__char--accent.hero__char--swing {
+  animation: heroCharSwing 2.75s ease-in-out infinite, gradientFlow 12s ease infinite;
+  animation-delay: calc(var(--i) * 0.055s), 0s;
+}
+
+.hero__char--flip {
+  display: inline-block;
+  vertical-align: baseline;
+  perspective: 520px;
+  line-height: 1;
+  animation: none;
+}
+
+.hero__char-flip {
+  display: inline-block;
+  position: relative;
+  transform-style: preserve-3d;
+  transform-origin: 50% 52%;
+  animation: heroCharFlip 3.4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.06s);
+}
+
+.hero__char-flip__face {
+  display: inline-block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.hero__char-flip__face--back {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  transform: rotateY(180deg);
+}
+
+.hero__char--accent .hero__char-flip__face {
+  color: transparent;
+  background: var(--gradient-accent);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero__char--accent.hero__char--flip .hero__char-flip {
+  animation: heroCharFlip 3.4s ease-in-out infinite, gradientFlow 12s ease infinite;
+  animation-delay: calc(var(--i) * 0.06s), 0s;
 }
 
 .hero__subtitle {
@@ -929,6 +993,14 @@
     animation-duration: 3.5s;
   }
 
+  .hero__char--swing {
+    animation-duration: 2.4s;
+  }
+
+  .hero__char-flip {
+    animation-duration: 2.8s;
+  }
+
   .catalog {
     padding: 20px 0 60px;
   }
@@ -1261,15 +1333,41 @@
   }
 }
 
+@keyframes heroCharSwing {
+  0%,
+  100% {
+    transform: rotate(-11deg);
+  }
+  50% {
+    transform: rotate(11deg);
+  }
+}
+
+@keyframes heroCharFlip {
+  0%,
+  100% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero::before,
-  .hero::after {
+  main:has(> .hero)::before,
+  main:has(> .hero)::after {
     animation: none;
   }
 
   .hero__char,
-  .hero__char--accent {
+  .hero__char--accent,
+  .hero__char--swing,
+  .hero__char-flip {
     animation: none !important;
+  }
+
+  .hero__char-flip {
+    transform: none !important;
   }
 
   .catalog__filters .filter-btn {

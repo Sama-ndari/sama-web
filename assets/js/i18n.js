@@ -2,7 +2,7 @@ const I18N = {
   en: {
     store_name: "Sama Web",
     hero_label: "Showcase",
-    hero_title_line1: "Websites & platforms",
+    hero_title_line1: "Websites and platforms",
     hero_title_line2_prefix: "with ",
     hero_title_accent: "clarity & craft",
     hero_subtitle:
@@ -55,7 +55,7 @@ const I18N = {
   fr: {
     store_name: "Sama Web",
     hero_label: "Vitrine",
-    hero_title_line1: "Sites & plateformes",
+    hero_title_line1: "Sites web et plateformes",
     hero_title_line2_prefix: "avec ",
     hero_title_accent: "clarté & exigence",
     hero_subtitle:
