@@ -13,6 +13,8 @@ Static showcase for selected web projects - vanilla HTML, CSS, JavaScript.
 
 Local code: `../YIM`, `../incognito-social` (IBANGA).
 
+Assets use **WebP** previews (`preview-1.webp` …) and `icon.webp` per project under `assets/apps/{id}/`.
+
 **Legal links in the showcase:** YIM opens [privacy](https://yimburundi.com/privacy) and [terms](https://yimburundi.com/terms) on the live site. IBANGA sidebar uses `…/privacy` and `…/terms` on the IBANGA domain - **deploy those routes** on the Incognito app when ready (URLs are wired in `apps.js`).
 
 ## Run locally

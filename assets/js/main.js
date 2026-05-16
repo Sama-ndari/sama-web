@@ -126,7 +126,7 @@ function statusBadgeHtml(app) {
 
 function appIconHtml(app, prefix) {
   var alt = app.name.replace(/"/g, "&quot;");
-  var dim = prefix === "app-hero" ? "100" : "76";
+  var dim = prefix === "app-hero" ? "96" : "72";
   if (app.status === "dev") {
     return (
       '<div class="' +
@@ -456,7 +456,7 @@ function renderMedia(app) {
             altBase +
             " preview " +
             (idx + 1) +
-            '" width="400" height="225" loading="lazy" decoding="async" /></div>'
+            '" loading="lazy" decoding="async" /></div>'
           );
         })
         .join("");
