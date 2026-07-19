@@ -1,26 +1,30 @@
-# Sama Web - showcase
+# Sama Web
 
-Static showcase for selected web projects - vanilla HTML, CSS, JavaScript.
+Minimal portfolio for selected websites designed and built by Samandari.
 
-**Suggested GitHub Pages domain:** `web.samandari.dev` (see `CNAME`).
+Each project card links directly to the live website. No screenshots, mockups,
+or intermediate detail pages.
 
-## Featured sites
+## Featured websites
 
-| Project | URL | Category |
-|---------|-----|----------|
-| **YIM Burundi** | [yimburundi.com](https://yimburundi.com) | Community |
-| **IBANGA** | [ibanga.samandari.dev](https://www.ibanga.samandari.dev) | Privacy |
+- [YIM Burundi](https://yimburundi.com)
+- [IBANGA](https://www.ibanga.samandari.dev)
 
-Local code: `../YIM`, `../incognito-social` (IBANGA).
+## Structure
 
-Assets use **WebP** previews (`preview-1.webp` …) and `icon.webp` per project under `assets/apps/{id}/`.
-
-**Legal links in the showcase:** YIM opens [privacy](https://yimburundi.com/privacy) and [terms](https://yimburundi.com/terms) on the live site. IBANGA sidebar uses `…/privacy` and `…/terms` on the IBANGA domain - **deploy those routes** on the Incognito app when ready (URLs are wired in `apps.js`).
+- `index.html` — single-page showcase
+- `assets/js/apps.js` — project data
+- `assets/js/i18n.js` — English and French translations
+- `assets/js/main.js` — page rendering
+- `assets/css/` — design system and components
+- `apps/` — optional short redirect URLs
 
 ## Run locally
 
-Open `index.html` in a browser or use any static server.
+```bash
+python3 -m http.server 8000
+```
 
-## Tech
+Open `http://localhost:8000`.
 
-No build step required. Optional `build.sh` can minify to `dist/` for deployment.
+No build step is required.

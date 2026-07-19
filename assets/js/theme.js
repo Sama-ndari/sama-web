@@ -22,6 +22,7 @@ function updateThemeIcon(theme) {
     theme === "dark"
       ? '<i class="bi bi-sun-fill" aria-hidden="true"></i>'
       : '<i class="bi bi-moon-fill" aria-hidden="true"></i>';
+  btn.setAttribute("aria-label", theme === "dark" ? t("theme_light") : t("theme_dark"));
 }
 
 function initLangToggle(onLangChange) {
