@@ -13,7 +13,7 @@
   --bg-card: rgba(255, 255, 255, 0.68);
   --text: #181714;
   --text-muted: #5f5b53;
-  --text-dim: #817b70;
+  --text-dim: #6b665c;
   --border: rgba(24, 23, 20, 0.12);
   --border-strong: rgba(24, 23, 20, 0.2);
   --accent: #d86718;
@@ -246,6 +246,13 @@ body > footer {
   text-decoration: none;
 }
 
+/* Theme switch: the circular reveal is driven from theme.js via WAAPI. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 ::selection {
   background: var(--accent-soft);
   color: var(--text);
@@ -281,6 +288,7 @@ body > footer {
   *::after {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }

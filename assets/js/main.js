@@ -3,8 +3,54 @@ document.addEventListener("DOMContentLoaded", function () {
   document.documentElement.lang = getLang();
   initTheme();
   initLangToggle(renderPage);
+  initScrollReveals();
+  initCardSpotlight();
   renderPage();
 });
+
+var revealObserver = null;
+var workRevealed = false;
+
+function initScrollReveals() {
+  if (!("IntersectionObserver" in window)) return;
+  revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      if (entry.target.classList.contains("project-card")) workRevealed = true;
+      revealObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.15, rootMargin: "4000px 0px -40px 0px" });
+
+  [".section-heading", ".contact__inner"].forEach(function (selector) {
+    var element = document.querySelector(selector);
+    if (!element) return;
+    element.classList.add("reveal");
+    revealObserver.observe(element);
+  });
+}
+
+function decorateCards() {
+  var cards = document.querySelectorAll("#projectGrid .project-card");
+  Array.prototype.forEach.call(cards, function (card, index) {
+    card.classList.add("reveal");
+    card.style.setProperty("--reveal-delay", index * 110 + "ms");
+    if (workRevealed || !revealObserver) card.classList.add("is-visible");
+    else revealObserver.observe(card);
+  });
+}
+
+function initCardSpotlight() {
+  var grid = document.getElementById("projectGrid");
+  if (!grid || !window.matchMedia("(hover: hover)").matches) return;
+  grid.addEventListener("mousemove", function (event) {
+    var card = event.target.closest(".project-card");
+    if (!card) return;
+    var rect = card.getBoundingClientRect();
+    card.style.setProperty("--mx", event.clientX - rect.left + "px");
+    card.style.setProperty("--my", event.clientY - rect.top + "px");
+  });
+}
 
 function escapeHtml(value) {
   return String(value)
@@ -35,12 +81,8 @@ function animatedLetters(text, accent) {
     .map(function (part) {
       if (!part.trim()) return part;
       var letters = Array.from(part).map(function (character) {
-        var motion = "hero-letter--float";
-        var letter = character.toLowerCase();
-        if ("bdgq".indexOf(letter) !== -1) motion = "hero-letter--flip";
-        if (letter === "p") motion = "hero-letter--swing";
         var accentClass = accent ? " hero-letter--accent" : "";
-        var html = '<span class="hero-letter ' + motion + accentClass + '" style="--letter-index:' +
+        var html = '<span class="hero-letter hero-letter--float' + accentClass + '" style="--letter-index:' +
           letterIndex + '">' + escapeHtml(character) + "</span>";
         letterIndex += 1;
         return html;
@@ -93,10 +135,14 @@ function renderProjects() {
   var grid = document.getElementById("projectGrid");
   if (!grid) return;
   grid.innerHTML = APPS.map(renderProjectCard).join("");
+  decorateCards();
 }
 
 function renderPage() {
   applyCommonI18n();
+  document.title = t("meta_title");
+  var metaDescription = document.querySelector('meta[name="description"]');
+  if (metaDescription) metaDescription.setAttribute("content", t("meta_description"));
   setText("skipLink", t("skip_link"));
   setText("workLink", t("work_link"));
   setText("heroLabel", t("hero_label"));

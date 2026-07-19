@@ -48,7 +48,10 @@
 .hero__title-line {
   display: block;
 }
-.hero-word { display: inline-block; }
+.hero-word {
+  display: inline-block;
+  white-space: nowrap;
+}
 @media (min-width: 821px) { .hero__title-line { white-space: nowrap; } }
 .hero-letter {
   display: inline-block;
@@ -64,18 +67,10 @@
 }
 
 .hero-letter--float {
-  animation: letterFloat 5s ease-in-out infinite;
-  animation-delay: calc(var(--letter-index) * 35ms);
-}
-
-.hero-letter--swing {
-  animation: letterSwing 3.2s ease-in-out infinite;
-  animation-delay: calc(var(--letter-index) * 45ms);
-}
-
-.hero-letter--flip {
-  animation: letterFlip 4.4s ease-in-out infinite;
-  animation-delay: calc(var(--letter-index) * 55ms);
+  animation:
+    letterIn 700ms cubic-bezier(0.22, 1, 0.36, 1) both,
+    letterFloat 5s ease-in-out infinite;
+  animation-delay: calc(120ms + var(--letter-index) * 26ms), calc(var(--letter-index) * 35ms);
 }
 
 .hero__subtitle {
@@ -103,6 +98,24 @@
 
 .hero__cta:hover i {
   transform: translateY(4px);
+}
+
+.hero .eyebrow,
+.hero__subtitle,
+.hero__cta {
+  animation: riseIn 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero .eyebrow {
+  animation-delay: 60ms;
+}
+
+.hero__subtitle {
+  animation-delay: 480ms;
+}
+
+.hero__cta {
+  animation-delay: 620ms;
 }
 
 .work {
@@ -137,6 +150,52 @@
   gap: 20px;
 }
 
+/* Scroll-triggered reveal; `is-visible` is added by IntersectionObserver. */
+.reveal {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  animation: riseIn 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* Cursor-tracking spotlight; --mx/--my are set from JS on mousemove. */
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(460px circle at var(--mx, 50%) var(--my, 40%), rgba(255, 255, 255, 0.09), transparent 62%);
+  transition: opacity 400ms ease;
+}
+
+.project-card:hover::after {
+  opacity: 1;
+}
+
+/* Align visual, body, and footer rows across the two cards. */
+@media (min-width: 821px) {
+  @supports (grid-template-rows: subgrid) {
+    .project-grid {
+      grid-template-rows: auto auto auto;
+    }
+
+    .project-grid > .project-card {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 3;
+    }
+
+    .project-card > .project-card__body {
+      margin-top: 0;
+    }
+  }
+}
+
 .project-card {
   --project-primary: var(--accent);
   --project-secondary: var(--accent-2);
@@ -163,7 +222,6 @@
   --project-bg: linear-gradient(155deg, #172554 0%, #1e3a8a 52%, #1e40af 100%);
   --project-muted: rgba(255, 255, 255, 0.75);
   --project-border: rgba(96, 165, 250, 0.32);
-  font-family: "Plus Jakarta Sans", var(--font-body);
 }
 
 .project-card--ibanga {
@@ -174,7 +232,6 @@
     linear-gradient(155deg, #231f1c 0%, #1a1614 100%);
   --project-muted: rgba(255, 248, 242, 0.7);
   --project-border: rgba(203, 74, 21, 0.34);
-  font-family: "Outfit", var(--font-body);
 }
 
 .project-card:hover {
@@ -221,6 +278,10 @@
 .project-card--yimburundi .project-card__logo {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.94);
+}
+
+.project-card--ibanga .project-card__logo {
+  background: rgba(255, 248, 242, 0.94);
 }
 
 .project-card__logo img {
@@ -419,25 +480,28 @@
   }
 }
 
-@keyframes letterSwing {
-  0%,
-  100% {
-    transform: rotate(-8deg);
+/* Entrance animations use `translate` so they compose with `transform` effects. */
+@keyframes letterIn {
+  from {
+    opacity: 0;
+    translate: 0 0.35em;
+    filter: blur(8px);
   }
-  50% {
-    transform: rotate(8deg);
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
   }
 }
 
-@keyframes letterFlip {
-  0%,
-  34%,
-  100% {
-    transform: rotateY(0deg);
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    translate: 0 26px;
   }
-  50%,
-  84% {
-    transform: rotateY(180deg);
+  to {
+    opacity: 1;
+    translate: 0 0;
   }
 }
 
@@ -464,12 +528,11 @@
   }
 
   .hero__title {
-    font-size: clamp(2.8rem, 14vw, 4rem);
+    font-size: clamp(2.4rem, 12vw, 4rem);
   }
 
   .hero__inner::after {
-    top: 30%;
-    font-size: 11rem;
+    display: none;
   }
 
   .work {

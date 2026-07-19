@@ -9,10 +9,47 @@ function initTheme() {
   themeBtn.addEventListener("click", function () {
     var current = document.documentElement.getAttribute("data-theme");
     var next = current === "dark" ? "light" : "dark";
+    applyTheme(next, themeBtn);
+  });
+}
+
+function applyTheme(next, sourceBtn) {
+  var apply = function () {
     document.documentElement.setAttribute("data-theme", next);
     setTheme(next);
     updateThemeIcon(next);
-  });
+  };
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!document.startViewTransition || reduceMotion || !sourceBtn) {
+    apply();
+    return;
+  }
+
+  var rect = sourceBtn.getBoundingClientRect();
+  var x = rect.left + rect.width / 2;
+  var y = rect.top + rect.height / 2;
+  var radius = Math.hypot(
+    Math.max(x, window.innerWidth - x),
+    Math.max(y, window.innerHeight - y)
+  );
+
+  var transition = document.startViewTransition(apply);
+  transition.ready.then(function () {
+    document.documentElement.animate(
+      {
+        clipPath: [
+          "circle(0px at " + x + "px " + y + "px)",
+          "circle(" + radius + "px at " + x + "px " + y + "px)"
+        ]
+      },
+      {
+        duration: 550,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        pseudoElement: "::view-transition-new(root)"
+      }
+    );
+  }).catch(function () {});
 }
 
 function updateThemeIcon(theme) {
