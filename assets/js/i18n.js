@@ -1,7 +1,7 @@
 const I18N = {
   en: {
     store_name: "Sama Web",
-    meta_title: "Sama Web — Selected websites by Samandari",
+    meta_title: "Sama Web • Selected websites by Samandari",
     meta_description: "Selected websites designed and built by Samandari.",
     skip_link: "Skip to content",
     settings_nav: "Site settings",
@@ -33,7 +33,7 @@ const I18N = {
   },
   fr: {
     store_name: "Sama Web",
-    meta_title: "Sama Web — Sites sélectionnés par Samandari",
+    meta_title: "Sama Web • Sites sélectionnés par Samandari",
     meta_description: "Une sélection de sites web conçus et développés par Samandari.",
     skip_link: "Aller au contenu",
     settings_nav: "Réglages du site",
