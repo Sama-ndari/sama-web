@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <style id="sama-gate-boot">html.sama-gate-checking body{visibility:hidden!important}html.sama-gate-blocked body>*:not(#sama-access-gate){display:none!important}</style>
+  <script src="../../assets/js/access-gate.js"></script>
+<meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, follow" />
   <title>IBANGA • Privacy-first web experience</title>
@@ -16,8 +18,21 @@
   <meta property="og:site_name" content="Sama Web" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="IBANGA" />
-  <meta http-equiv="refresh" content="0; url=https://www.ibanga.samandari.dev/" />
-  <script>window.location.replace("https://www.ibanga.samandari.dev/");</script>
+  <script>
+    (function () {
+      var target = "https://www.ibanga.samandari.dev/";
+      var html = document.documentElement;
+      function tryRedirect() {
+        if (html.classList.contains("sama-gate-blocked")) return;
+        if (html.classList.contains("sama-gate-checking")) {
+          setTimeout(tryRedirect, 40);
+          return;
+        }
+        window.location.replace(target);
+      }
+      tryRedirect();
+    })();
+  </script>
 </head>
 <body></body>
 </html>
